@@ -34,7 +34,9 @@ int get_depth(Bst bst){
 }
 
 void add(Bst* bst, int value){
+  if(bst == 0){
 
+  }
 }
 
 int root_value(Bst bst){
