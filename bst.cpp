@@ -33,11 +33,42 @@ int get_depth(Bst bst){
   return 0;
 }
 
-void add(Bst* bst, int value){
-  if(bst == 0){
+void Insert(int value, Node* start_node);
 
+void add(Bst* bst, int value){
+  Node* newNode = (struct Node*) malloc(sizeof(struct Node));
+  newNode->value = value;
+  newNode->left = 0;
+  newNode->right = 0;
+  if(bst == 0){
+    (*bst) = newNode;
+    return;
+  }
+  Insert(value, newNode);
+}
+
+void Insert(int value, Node* start_node){
+  if(value <= start_node->value){
+    if(start_node->left == 0){
+      start_node->left = (struct Node*) malloc(sizeof(struct Node));
+      start_node->value = value;
+      start_node->left = 0;
+      start_node->right = 0;
+    } else {
+      Insert(value, start_node->left);
+    }
+  } else {
+    if(start_node->right == 0){
+      start_node->right = (struct Node*) malloc(sizeof(struct Node));
+      start_node->value = value;
+      start_node->left = 0;
+      start_node->right = 0;
+    } else {
+      Insert(value, start_node->right);
+    }
   }
 }
+
 
 int root_value(Bst bst){
   return 0;
