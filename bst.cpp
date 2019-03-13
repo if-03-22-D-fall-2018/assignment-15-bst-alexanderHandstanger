@@ -105,25 +105,77 @@ Bst right_subtree(Bst root){
 }
 
 int traverse_pre_order(Bst bst, int *elements, int start){
-  return 0;
+  if(bst == 0){
+    return start;
+  }
+  elements[start] = bst->value;
+  start++;
+  start = traverse_pre_order(bst->left, elements, start);
+  start = traverse_pre_order(bst->right, elements, start);
+  return start;
 }
 
 int traverse_in_order(Bst bst, int *elements, int start){
-  return 0;
+  if(bst == 0){
+    return start;
+  }
+  start = traverse_in_order(bst->left, elements, start);
+  elements[start] = bst->value;
+  start++;
+  start = traverse_in_order(bst->right, elements, start);
+  return start;
 }
 
 int traverse_post_order(Bst bst, int *elements, int start){
-  return 0;
+  if(bst == 0){
+    return start;
+  }
+  start = traverse_post_order(bst->left, elements, start);
+  start = traverse_post_order(bst->right, elements, start);
+  elements[start] = bst->value;
+  start++;
+  return start;
 }
 
 bool are_equal(Bst bst1, Bst bst2){
+  if(bst1 == 0 && bst2 == 0){
+    return true;
+  }
+  if(get_depth(bst1) == get_depth(bst2)){
+    int *elements = new int[get_depth(bst1)];
+    traverse_in_order(bst1, elements, 0);
+    int *elements1 = new int[get_depth(bst2)];
+    traverse_in_order(bst2, elements1, 0);
+    for (int i = 0; i < get_depth(bst1)+1; i++) {
+      if(elements[i] != elements1[i]){
+        return false;
+      }
+    }
+    if(bst1->value == bst2->value){
+      return true;
+    }
+  }
   return false;
 }
 
 void most_left_longest_branch(Bst bst, Bst* branch){
-
+  if(bst == 0){
+    return;
+  }
+  if(get_depth(bst->right) > get_depth(bst->left)){
+    add(branch, bst->value);
+    most_left_longest_branch(&(*bst->right), branch);
+  } else if (get_depth(bst->right) <= get_depth(bst->left)){
+    add(branch, bst->value);
+    most_left_longest_branch(&(*bst->left), branch);
+  }
 }
 
 int get_number_of_subtrees(Bst bst){
-  return 0;
+  if(bst == 0){
+    return -1;
+  }
+  int *elements = new int[get_depth(bst)];
+  int solution = traverse_in_order(bst, elements, 0);
+  return solution-1;
 }
