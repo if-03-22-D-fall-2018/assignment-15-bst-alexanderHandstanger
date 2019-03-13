@@ -26,60 +26,82 @@ Bst new_bst(){
 }
 
 void delete_bst(Bst bst){
-
+  if(bst == 0){
+    return;
+  }
+  delete_bst(bst->left);
+  delete_bst(bst->right);
+  sfree(bst);
 }
 
 int get_depth(Bst bst){
-  return 0;
+  if(bst == 0){
+    return 0;
+  }
+  int leftDepth = get_depth(bst->left);
+  int rightDepth = get_depth(bst->right);
+
+  if(leftDepth > rightDepth){
+    return leftDepth+1;
+  } else {
+    return rightDepth+1;
+  }
 }
 
-void Insert(int value, Node* start_node);
+Node* createNewNode (int value);
 
 void add(Bst* bst, int value){
+  if((*bst) == 0){
+    Node* newNode = createNewNode(value);
+    (*bst) = newNode;
+    return;
+  }
+  if(value <= (*bst)->value){
+    if((*bst)->left == 0){
+      Node* newNode = createNewNode(value);
+      (*bst)->left = newNode;
+    } else {
+      Node* next = (*bst)->left;
+      add(&next, value);
+    }
+  } else {
+    if((*bst)->right == 0){
+      Node* newNode = createNewNode(value);
+      (*bst)->right = newNode;
+    } else {
+      Node* next = (*bst)->right;
+      add(&next, value);
+    }
+  }
+}
+
+Node* createNewNode (int value){
   Node* newNode = (struct Node*) malloc(sizeof(struct Node));
   newNode->value = value;
   newNode->left = 0;
   newNode->right = 0;
-  if(bst == 0){
-    (*bst) = newNode;
-    return;
-  }
-  Insert(value, newNode);
+  return newNode;
 }
-
-void Insert(int value, Node* start_node){
-  if(value <= start_node->value){
-    if(start_node->left == 0){
-      start_node->left = (struct Node*) malloc(sizeof(struct Node));
-      start_node->value = value;
-      start_node->left = 0;
-      start_node->right = 0;
-    } else {
-      Insert(value, start_node->left);
-    }
-  } else {
-    if(start_node->right == 0){
-      start_node->right = (struct Node*) malloc(sizeof(struct Node));
-      start_node->value = value;
-      start_node->left = 0;
-      start_node->right = 0;
-    } else {
-      Insert(value, start_node->right);
-    }
-  }
-}
-
 
 int root_value(Bst bst){
-  return 0;
+  if(bst == 0){
+      return 0;
+  }
+  return bst->value;
 }
 
 Bst left_subtree(Bst root){
-  return 0;
+  if(root == 0){
+      return 0;
+  }
+  return root->left;
 }
 
 Bst right_subtree(Bst root){
-  return 0;
+  if(root == 0){
+      return 0;
+  }
+  return root->right;
 }
 
 int traverse_pre_order(Bst bst, int *elements, int start){
